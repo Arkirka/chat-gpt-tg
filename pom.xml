@@ -11,6 +11,7 @@
     <module>eureka-claim</module>
     <module>api-gateway</module>
     <module>bot</module>
+    <module>chat-gpt</module>
   </modules>
 
   <properties>
