@@ -14,6 +14,14 @@ import java.util.Map;
 @Generated("jsonschema2pojo")
 public class Message {
 
+    public Message() {
+    }
+
+    public Message(String role, String content) {
+        this.role = role;
+        this.content = content;
+    }
+
     @JsonProperty("role")
     private String role;
     @JsonProperty("content")

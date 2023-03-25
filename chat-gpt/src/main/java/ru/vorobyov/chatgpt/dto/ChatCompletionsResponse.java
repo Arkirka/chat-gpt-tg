@@ -31,7 +31,7 @@ public class ChatCompletionsResponse {
     @JsonProperty("choices")
     private List<Choice> choices;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+    private Map<String, String> additionalProperties = new LinkedHashMap<String, String>();
 
     @JsonProperty("id")
     public String getId() {
@@ -94,12 +94,12 @@ public class ChatCompletionsResponse {
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, String> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(String name, String value) {
         this.additionalProperties.put(name, value);
     }
 }

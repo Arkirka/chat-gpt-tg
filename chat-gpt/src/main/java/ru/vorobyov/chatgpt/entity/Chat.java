@@ -12,7 +12,7 @@ public class Chat {
     private Long id;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messageList;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String theme;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true, nullable = false)
@@ -40,5 +40,13 @@ public class Chat {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
