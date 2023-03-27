@@ -4,17 +4,26 @@ import jakarta.persistence.*;
 
 @Entity
 public class Message {
+    public Message() {
+    }
+
+    public Message(String role, String content, Chat chat) {
+        this.role = role;
+        this.content = content;
+        this.chat = chat;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(nullable = false)
     private String role;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 4000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_id", referencedColumnName = "id", unique = true, nullable = false)
+    @JoinColumn(name = "chat_id", referencedColumnName = "id", nullable = false)
     private Chat chat;
 
     public String getRole() {

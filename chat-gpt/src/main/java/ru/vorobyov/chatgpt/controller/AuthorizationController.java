@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vorobyov.chatgpt.client.ChatGptClient;
-import ru.vorobyov.chatgpt.dto.ChatCompletionsRequest;
 import ru.vorobyov.chatgpt.dto.Message;
 import ru.vorobyov.chatgpt.dto.RegisterTokenRequest;
 import ru.vorobyov.chatgpt.service.ChatService;
@@ -39,7 +38,7 @@ public class AuthorizationController {
             return ResponseEntity.ok(id);
 
         var requestAdditionalProperties = chatGptClient
-                .sendChatMessage(token, getTestChatCompletionsRequest())
+                .sendChatMessage(token, getTestChatMessages())
                 .getAdditionalProperties();
 
         boolean containsError = requestAdditionalProperties.containsKey("error");
@@ -64,11 +63,10 @@ public class AuthorizationController {
         return chatId != -1L;
     }
 
-    private ChatCompletionsRequest getTestChatCompletionsRequest(){
-        ChatCompletionsRequest request = new ChatCompletionsRequest();
-        List<Message> messageList = List.of(new Message("user", "test message"), new Message("assistant", "test response"));
-        request.setMessages(messageList);
-        request.setModel("gpt-3.5-turbo");
-        return request;
+    private List<Message> getTestChatMessages(){
+        return List.of(
+                new Message("user", "test message"),
+                new Message("assistant", "test response")
+        );
     }
 }

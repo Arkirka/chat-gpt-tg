@@ -23,10 +23,10 @@ public class ChatGptClientImpl implements ChatGptClient {
     }
 
     @Override
-    public ChatCompletionsResponse sendChatMessage(String token, ChatCompletionsRequest request) {
-        ChatCompletionsRequest temp = new ChatCompletionsRequest();
-        temp.setModel("gpt-3.5-turbo");
-        temp.setMessages(List.of(new Message()));
+    public ChatCompletionsResponse sendChatMessage(String token, List<Message> messages) {
+        ChatCompletionsRequest request = new ChatCompletionsRequest();
+        request.setModel("gpt-3.5-turbo");
+        request.setMessages(messages);
         return webClient.post()
                 .uri("/chat/completions")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
