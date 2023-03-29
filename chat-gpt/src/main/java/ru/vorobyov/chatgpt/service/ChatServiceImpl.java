@@ -52,4 +52,9 @@ public class ChatServiceImpl implements ChatService{
     public Optional<Chat> findById(Long chatId) {
         return chatRepository.findById(chatId);
     }
+
+    @Override
+    public Optional<Chat> findByUserId(UUID userId) {
+        return chatRepository.findByUserId(userId);
+    }
 }

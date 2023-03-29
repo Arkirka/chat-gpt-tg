@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.vorobyov.chatgpt.client.ChatGptClient;
-import ru.vorobyov.chatgpt.dto.ChatCompletionsResponse;
-import ru.vorobyov.chatgpt.dto.ChatMessageRequest;
-import ru.vorobyov.chatgpt.dto.Choice;
-import ru.vorobyov.chatgpt.dto.Message;
+import ru.vorobyov.chatgpt.dto.*;
 import ru.vorobyov.chatgpt.entity.User;
 import ru.vorobyov.chatgpt.service.ChatService;
 import ru.vorobyov.chatgpt.service.MessageService;
@@ -76,7 +73,7 @@ public class ChatController {
                 .get(gptResponse.getChoices().size() - 1)
                 .getMessage()
                 .getContent();
-        return ResponseEntity.ok(responseMessage);
+        return ResponseEntity.ok(new ChatMessageResponse(responseMessage));
     }
 
     private boolean isUserExist(UUID userId){

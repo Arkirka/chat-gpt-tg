@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.vorobyov.chatgpt.client.ChatGptClient;
 import ru.vorobyov.chatgpt.dto.Message;
 import ru.vorobyov.chatgpt.dto.RegisterTokenRequest;
+import ru.vorobyov.chatgpt.dto.RegisterTokenResponse;
+import ru.vorobyov.chatgpt.entity.User;
 import ru.vorobyov.chatgpt.service.ChatService;
 import ru.vorobyov.chatgpt.service.UserService;
 
@@ -33,10 +35,16 @@ public class AuthorizationController {
         String token = request.getToken();
         if (token == null || token.isEmpty())
             return ResponseEntity.badRequest().build();
-        UUID id = userService.findIdByToken(token);
-        if (id != null)
-            return ResponseEntity.ok(id);
-
+        var userOptional = userService.findByToken(token);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            var chat = chatService.findByUserId(user.getId());
+            if (chat.isPresent())
+                return ResponseEntity.ok(
+                        new RegisterTokenResponse(String.valueOf(user.getId()), String.valueOf(chat.get().getId()))
+                );
+            return new ResponseEntity<>("User exist, but not chat", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         var requestAdditionalProperties = chatGptClient
                 .sendChatMessage(token, getTestChatMessages())
                 .getAdditionalProperties();
@@ -49,18 +57,19 @@ public class AuthorizationController {
                 return ResponseEntity.internalServerError().build();
         }
 
-        id = userService.create(token);
+        UUID id = userService.create(token);
         if (id != null){
-            return createChat(id)
-                    ? ResponseEntity.ok(id)
-                    : new ResponseEntity<>("Unable create default chat", HttpStatus.INTERNAL_SERVER_ERROR);
+            Long chatId = createChat(id);
+            if (chatId == null || chatId == -1L)
+                return new ResponseEntity<>("Unable create default chat", HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return ResponseEntity.ok(new RegisterTokenResponse(String.valueOf(id), String.valueOf(chatId)));
         }
         return new ResponseEntity<>("Unable create user", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private boolean createChat(UUID userId){
-        Long chatId = chatService.create(userId, "First dialog");
-        return chatId != -1L;
+    private Long createChat(UUID userId){
+        return chatService.create(userId, "First dialog");
     }
 
     private List<Message> getTestChatMessages(){
