@@ -12,6 +12,7 @@
     <module>api-gateway</module>
     <module>bot</module>
     <module>chat-gpt</module>
+    <module>authorization</module>
   </modules>
 
   <properties>
