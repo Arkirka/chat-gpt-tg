@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  eureka-server:
+    build:
+      context: /eureka-server
+    ports:
+      - "8081:8081"
+  authorization:
+    depends_on:
+      - eureka-server
+    build:
+      context: /authorization
+    ports:
+      - "8090:8090"

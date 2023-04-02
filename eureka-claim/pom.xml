@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.vorobyov.micro.claim</groupId>
 	<artifactId>eureka-claim</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>eureka-claim</name>
 	<description>eureka-claim</description>
 
